@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/',['as' => 'home', function () {
-    return '제 이름은 "Home" 입니다.';
-}]);
+Route::get('/',function () {
+    return view('welcome', [
+      'name' => 'User',
+      'greeting' => '반갑습니다 ',
+    ]);
+});
