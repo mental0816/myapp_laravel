@@ -12,8 +12,5 @@
 */
 
 Route::get('/',function () {
-    return view('welcome', [
-      'name' => 'User',
-      'greeting' => '반갑습니다 ',
-    ]);
+    return view('welcome');
 });
