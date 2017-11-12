@@ -12,4 +12,31 @@
 */
 
 Route::get('/', 'WelcomeController@index');
-Route::resource('articles', 'ArticlesController');
+
+Route::get('auth/login', function(){
+  $credential = [
+    'email' => 'john@example.com',
+    'password' => 'password'
+  ];
+
+  if(! auth()->attempt($credential)){
+    return '로그인 정보가 정확하지 않습니다.';
+  }
+  return redirect('protected');
+});
+
+Route::get('protected', ['middleware' => 'auth', function(){
+  dump(session()->all());
+
+  return '어서오세요, ' . auth()->user()->name . '님.';
+}]);
+
+Route::get('auth/logout', function(){
+  auth()->logout();
+
+  return '로그아웃 되었습니다.';
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
