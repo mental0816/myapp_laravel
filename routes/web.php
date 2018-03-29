@@ -40,3 +40,9 @@ Route::get('auth/logout', function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('articles', 'ArticlesController');
+
+//DB::listen(function ($query){
+//  var_dump($query->sql);
+//});
