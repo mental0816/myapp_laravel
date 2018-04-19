@@ -10,7 +10,8 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $articles = \App\Article::with('user')->latest()->paginate(3);
+        $articles = \App\Article::latest()->paginate(3);
+        dd(view('articles.index',compact('articles'))->render());
         return view('articles.index', compact('articles'));
     }
     /**
@@ -28,8 +29,6 @@ class ArticlesController extends Controller
      * @param \App\Http\Requests\ArticlesRequest $request
      * @return \Illuminate\Http\Response
      */
-
-
     public function store(\App\Http\Requests\ArticlesRequest $request) {
         $article = \App\User::find(1)->articles() ->create($request->all());
         if (! $article) {
@@ -37,11 +36,52 @@ class ArticlesController extends Controller
                 ->with('flash_message', '글이 저장되지 않았습니다.')
                 ->withInput();
         }
-////        14.1. 이벤트 시스템 작동 기본 원리
-       event(new \App\Events\ArticlesEvent($article));
-
-
-       return redirect(route('articles.index'))
+        return redirect(route('articles.index'))
             ->with('flash_message', '작성하신 글이 저장되었습니다.');
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $article = \App\Article::findOrFail($id);
+        dd($article);
+        return $article->toArray();
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 수정하기 위한 폼을 담은 뷰를반환합니다.:' . $id;
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        return __METHOD__ . '은(는) 사용자의 입력한 폼 데이터로 다음 기본 키를 가진 Article 모델을 수정합니다.:' . $id;
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 삭제합니다.:' . $id;
+    }
+
+    
 }
