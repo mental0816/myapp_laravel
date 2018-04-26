@@ -10,8 +10,7 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $articles = \App\Article::latest()->paginate(3);
-        dd(view('articles.index',compact('articles'))->render());
+        $articles = \App\Article::with('user')->latest()->paginate(3);
         return view('articles.index', compact('articles'));
     }
     /**
